@@ -7,6 +7,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -130,6 +131,7 @@ public class Posts implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    @JsonbTransient
     public Collection<Users> getUsersCollection() {
         return usersCollection;
     }
@@ -138,6 +140,7 @@ public class Posts implements Serializable {
         this.usersCollection = usersCollection;
     }
 
+    @JsonbTransient
     public Collection<Comments> getCommentsCollection() {
         return commentsCollection;
     }

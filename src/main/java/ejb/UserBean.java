@@ -116,9 +116,9 @@ public class UserBean implements UserBeanLocal {
         p.setUpdatedAt(new Date());
 
         try {
+            em.persist(p);
             posts.add(p);
             u.setPostsCollection(posts);
-            em.persist(p);
             em.merge(u);
         } catch (ConstraintViolationException e) {
             e.getConstraintViolations().forEach(violation -> {
@@ -218,6 +218,8 @@ public class UserBean implements UserBeanLocal {
         c.setPostId(p);
         c.setUserId(u);
         c.setContent(content);
+        c.setCreatedAt(new Date());
+        c.setUpdatedAt(new Date());
 
         commOfPost.add(c);
         p.setCommentsCollection(commOfPost);
@@ -247,9 +249,9 @@ public class UserBean implements UserBeanLocal {
         commOfPost.remove(c);
         p.setCommentsCollection(commOfPost);
 
-        em.remove(c);
         em.merge(p);
         em.merge(c);
+        em.remove(c);
     }
 
     @Override

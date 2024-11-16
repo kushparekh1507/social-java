@@ -25,10 +25,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
 public class TestServlet extends HttpServlet {
-
+    
     @EJB
     UserBeanLocal ubl;
-
+    
     UserClient ul;
 
     /**
@@ -53,15 +53,16 @@ public class TestServlet extends HttpServlet {
             out.println("<body>");
             out.println("<h2>");
 
-            ul = new UserClient();
-
-            Users user = new Users();
-            user.setUsername("aaa");
-            user.setFullName("aaa aaa");
-            user.setPassword("aaaa");
-            user.setProfilePic("aaa.jpg");
-
-            ul.addUser(user);
+//            ul = new UserClient();
+//
+//            Users user = new Users();
+//            user.setUsername("aaa");
+//            user.setFullName("aaa aaa");
+//            user.setPassword("aaaa");
+//            user.setProfilePic("aaa.jpg");
+//
+//            ul.addUser(user);
+            ubl.addComment(3, 2, "comment");
 
 //            ubl.createGroup("Kush", 1);
 //            ubl.addMemberToGroup(1, 1);
@@ -141,9 +142,9 @@ public class TestServlet extends HttpServlet {
 //            }
             out.println("<br/>");
             out.println("Hello world");
-
+            
             out.println("</h2>");
-
+            
             out.println("</body>");
             out.println("</html>");
         }

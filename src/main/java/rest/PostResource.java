@@ -78,7 +78,7 @@ public class PostResource {
     }
 
     @POST
-    @Path("/create/{media}/{caption}/userId")
+    @Path("/create/{media}/{caption}/{userId}")
     public void addPost(@PathParam("media") String mediaUrl, @PathParam("caption") String caption, @PathParam("userId") Integer userId) {
         ubl.addPost(mediaUrl, caption, userId);
     }
@@ -96,37 +96,36 @@ public class PostResource {
     }
 
     @GET
-    @Path("likesofpost/{pid}")
+    @Path("/likesofpost/{pid}")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<Users> getAllLikesOfPost(@PathParam("pid") Integer postId) {
         return ubl.getAllLikesOfPost(postId);
     }
-    
+
     @GET
     @Path("/likedbyuser/{uid}")
     public Collection<Posts> getPostsLikedByUser(@PathParam("uid") Integer userId) {
         return ubl.getPostsLikedByUser(userId);
     }
-    
+
     @POST
     @Path("/comment/{uid}/{pid}/{content}")
-    public void addComment(@PathParam("uid") Integer userId,@PathParam("pid") Integer postId,@PathParam("content") String content) {
+    public void addComment(@PathParam("uid") Integer userId, @PathParam("pid") Integer postId, @PathParam("content") String content) {
         ubl.addComment(userId, postId, content);
     }
-    
+
     @DELETE
     @Path("/deletecomment/{cid}/{uid}/{pid}")
-    public void deleteComment(@PathParam("cid") Integer commentId,@PathParam("uid") Integer userId,@PathParam("pid") Integer postId) {
+    public void deleteComment(@PathParam("cid") Integer commentId, @PathParam("uid") Integer userId,
+            @PathParam("pid") Integer postId) {
         ubl.deleteComment(commentId, userId, postId);
     }
-    
+
     @GET
     @Path("/commentsofpost/{pid}")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<Comments> getAllCommentsOfPost(@PathParam("pid") Integer postId) {
         return ubl.getAllCommentsOfPost(postId);
     }
-    
-    
 
 }

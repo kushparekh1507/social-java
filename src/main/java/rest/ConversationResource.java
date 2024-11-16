@@ -7,9 +7,8 @@ package rest;
 import ejb.UserBeanLocal;
 import entity.Conversations;
 import entity.Messages;
-import entity.Users;
+import helper.MessageRequest;
 import java.util.Collection;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -57,11 +56,11 @@ public class ConversationResource {
     }
 
     @POST
-    @Path("/sendmessage/{gid}/{sid}/{text}")
+    @Path("/sendmessage")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Messages sendMessage(List<Integer> participantsIds, @PathParam("gid") Integer groupId,
-            @PathParam("sid") Integer senderId, @PathParam("text") String text) {
-        return ubl.sendMessage(participantsIds, groupId, senderId, text);
+    @Produces(MediaType.APPLICATION_JSON)
+    public Messages sendMessage(MessageRequest mb) {
+        return ubl.sendMessage(mb.getParticipantsIds(), mb.getGroupId(), mb.getSenderId(), mb.getText());
     }
 
     @GET
@@ -77,7 +76,7 @@ public class ConversationResource {
     public Collection<Conversations> getAllConversationOfUser(@PathParam("uid") Integer userId) {
         return ubl.getAllConversationOfUser(userId);
     }
-    
+
     @GET
     @Path("/{cid}")
     @Produces(MediaType.APPLICATION_JSON)
