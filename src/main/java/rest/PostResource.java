@@ -8,6 +8,7 @@ import ejb.UserBeanLocal;
 import entity.Comments;
 import entity.Posts;
 import entity.Users;
+import helper.Response;
 import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ws.rs.core.Context;
@@ -59,8 +60,22 @@ public class PostResource {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Posts> getAllPosts() {
-        return ubl.getAllPosts();
+    public Response<Collection<Posts>> getAllPosts() {
+        Response<Collection<Posts>> response = new Response();
+        try {
+            // Fetch all posts from the business layer
+            Collection<Posts> allPosts = ubl.getAllPosts();
+
+            // Set the data, status, and message
+            response.setResult(allPosts);
+            response.setMessage("Posts fetched1  successfully!");
+            response.setStatus(true);
+        } catch (Exception e) {
+            response.setMessage("Failed fetching posts!");
+            response.setStatus(false);
+            response.setResult(null);
+        }
+        return response;
     }
 
     @GET
@@ -73,8 +88,22 @@ public class PostResource {
     @GET
     @Path("/allpostofuser/{uid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Posts> getAllPostsOfUser(@PathParam("uid") Integer userId) {
-        return ubl.getAllPostsOfUser(userId);
+    public Response<Collection<Posts>> getAllPostsOfUser(@PathParam("uid") Integer userId) {
+        Response<Collection<Posts>> response = new Response();
+        try {
+            // Fetch all posts from the business layer
+            Collection<Posts> allPosts = ubl.getAllPostsOfUser(userId);
+
+            // Set the data, status, and message
+            response.setResult(allPosts);
+            response.setMessage("Posts fetched1  successfully!");
+            response.setStatus(true);
+        } catch (Exception e) {
+            response.setMessage("Failed fetching posts!");
+            response.setStatus(false);
+            response.setResult(null);
+        }
+        return response;
     }
 
     @POST
@@ -104,8 +133,19 @@ public class PostResource {
 
     @GET
     @Path("/likedbyuser/{uid}")
-    public Collection<Posts> getPostsLikedByUser(@PathParam("uid") Integer userId) {
-        return ubl.getPostsLikedByUser(userId);
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response<Collection<Posts>> getPostsLikedByUser(@PathParam("uid") Integer userId) {
+        Response response = new Response();
+        try {
+            response.setResult(ubl.getPostsLikedByUser(userId));
+            response.setMessage("Posts fetched successfully!");
+            response.setStatus(true);
+        } catch (Exception e) {
+            response.setMessage("Failed fetching posts!");
+            response.setStatus(false);
+            response.setResult(e);
+        }
+        return response;
     }
 
     @POST

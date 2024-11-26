@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -98,14 +99,15 @@ public class Users implements Serializable {
     private Collection<Posts> likedPostsCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Collection<Comments> commentsCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<Groupmaster> groupmasterCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "createdBy")
     private Collection<Groups> createdGroups;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "senderId")
     private Collection<Messages> messagesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
     private Collection<Posts> postsCollection;
+    @JoinColumn(name = "groupmasterId", referencedColumnName = "groupmasterId")
+    @ManyToOne(optional = false)
+    private Groupmaster groupmasterId;
 
     public Users() {
     }
@@ -217,24 +219,6 @@ public class Users implements Serializable {
     }
 
     @JsonbTransient
-    public Collection<Groupmaster> getGroupmasterCollection() {
-        return groupmasterCollection;
-    }
-
-    public void setGroupmasterCollection(Collection<Groupmaster> groupmasterCollection) {
-        this.groupmasterCollection = groupmasterCollection;
-    }
-
-    @JsonbTransient
-    public Collection<Messages> getMessagesCollection() {
-        return messagesCollection;
-    }
-
-    public void setMessagesCollection(Collection<Messages> messagesCollection) {
-        this.messagesCollection = messagesCollection;
-    }
-
-    @JsonbTransient
     public Collection<Users> getFollowersCollection() {
         return followersCollection;
     }
@@ -268,6 +252,23 @@ public class Users implements Serializable {
 
     public void setCreatedGroups(Collection<Groups> createdGroups) {
         this.createdGroups = createdGroups;
+    }
+
+    @JsonbTransient
+    public Collection<Messages> getMessagesCollection() {
+        return messagesCollection;
+    }
+
+    public void setMessagesCollection(Collection<Messages> messagesCollection) {
+        this.messagesCollection = messagesCollection;
+    }
+
+    public Groupmaster getGroupmasterId() {
+        return groupmasterId;
+    }
+
+    public void setGroupmasterId(Groupmaster groupmasterId) {
+        this.groupmasterId = groupmasterId;
     }
 
     @Override

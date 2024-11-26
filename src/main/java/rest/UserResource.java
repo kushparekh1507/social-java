@@ -6,6 +6,7 @@ package rest;
 
 import ejb.UserBeanLocal;
 import entity.Users;
+import helper.Response;
 import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ws.rs.core.Context;
@@ -21,7 +22,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  * REST Web Service
@@ -74,7 +74,7 @@ public class UserResource {
     @GET
     @Path("/username/{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Users> getUserByUsername(@PathParam("username") String username) {
+    public Users getUserByUsername(@PathParam("username") String username) {
         return ubl.getUserByUsername(username);
     }
 
@@ -83,12 +83,17 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addUser(Users user) {
+        Response response = new Response();
         try {
             ubl.addUser(user);
-            return Response.status(Response.Status.CREATED).entity("User created successfully").build();
+            response.setMessage("User added successfully!");
+            response.setStatus(true);
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Error adding user: " + e.getMessage()).build();
+            response.setMessage("Failed adding user!");
+            response.setStatus(false);
+            response.setResult(e);
         }
+        return response;
     }
 
     @PUT

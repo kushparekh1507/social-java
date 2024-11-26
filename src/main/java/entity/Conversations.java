@@ -126,7 +126,7 @@ public class Conversations implements Serializable {
     public void setParticipants(Collection<Users> participants) {
         this.participants = participants;
     }
-
+    
     public Collection<Messages> getMessagesCollection() {
         return messagesCollection;
     }
@@ -167,5 +167,5 @@ public class Conversations implements Serializable {
     public String toString() {
         return "entity.Conversations[ conversationId=" + conversationId + " ]";
     }
-
+    
 }

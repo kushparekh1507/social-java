@@ -5,17 +5,22 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -27,65 +32,95 @@ import javax.validation.constraints.Size;
 @Table(name = "groupmaster")
 @NamedQueries({
     @NamedQuery(name = "Groupmaster.findAll", query = "SELECT g FROM Groupmaster g"),
-    @NamedQuery(name = "Groupmaster.findById", query = "SELECT g FROM Groupmaster g WHERE g.id = :id"),
-    @NamedQuery(name = "Groupmaster.findByRole", query = "SELECT g FROM Groupmaster g WHERE g.role = :role")})
+    @NamedQuery(name = "Groupmaster.findByGroupmasterId", query = "SELECT g FROM Groupmaster g WHERE g.groupmasterId = :groupmasterId"),
+    @NamedQuery(name = "Groupmaster.findByGroupName", query = "SELECT g FROM Groupmaster g WHERE g.groupName = :groupName"),
+    @NamedQuery(name = "Groupmaster.findByCreatedAt", query = "SELECT g FROM Groupmaster g WHERE g.createdAt = :createdAt"),
+    @NamedQuery(name = "Groupmaster.findByUpdatedAt", query = "SELECT g FROM Groupmaster g WHERE g.updatedAt = :updatedAt")})
 public class Groupmaster implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "groupmasterId")
+    private Integer groupmasterId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 200)
-    @Column(name = "role")
-    private String role;
-    @JoinColumn(name = "userId", referencedColumnName = "userId")
-    @ManyToOne(optional = false)
-    private Users userId;
+    @Size(min = 1, max = 20)
+    @Column(name = "groupName")
+    private String groupName;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "createdAt")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "updatedAt")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupmasterId")
+    private Collection<Users> usersCollection;
 
     public Groupmaster() {
     }
 
-    public Groupmaster(Integer id) {
-        this.id = id;
+    public Groupmaster(Integer groupmasterId) {
+        this.groupmasterId = groupmasterId;
     }
 
-    public Groupmaster(Integer id, String role) {
-        this.id = id;
-        this.role = role;
+    public Groupmaster(Integer groupmasterId, String groupName, Date createdAt, Date updatedAt) {
+        this.groupmasterId = groupmasterId;
+        this.groupName = groupName;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getGroupmasterId() {
+        return groupmasterId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setGroupmasterId(Integer groupmasterId) {
+        this.groupmasterId = groupmasterId;
     }
 
-    public String getRole() {
-        return role;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
-    public Users getUserId() {
-        return userId;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUserId(Users userId) {
-        this.userId = userId;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @JsonbTransient
+    public Collection<Users> getUsersCollection() {
+        return usersCollection;
+    }
+
+    public void setUsersCollection(Collection<Users> usersCollection) {
+        this.usersCollection = usersCollection;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (groupmasterId != null ? groupmasterId.hashCode() : 0);
         return hash;
     }
 
@@ -96,7 +131,7 @@ public class Groupmaster implements Serializable {
             return false;
         }
         Groupmaster other = (Groupmaster) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.groupmasterId == null && other.groupmasterId != null) || (this.groupmasterId != null && !this.groupmasterId.equals(other.groupmasterId))) {
             return false;
         }
         return true;
@@ -104,7 +139,7 @@ public class Groupmaster implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Groupmaster[ id=" + id + " ]";
+        return "entity.Groupmaster[ groupmasterId=" + groupmasterId + " ]";
     }
     
 }

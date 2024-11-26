@@ -6,6 +6,7 @@ package ejb;
 
 import entity.Comments;
 import entity.Conversations;
+import entity.Groupmaster;
 import entity.Groups;
 import entity.Messages;
 import entity.Posts;
@@ -47,16 +48,19 @@ public class UserBean implements UserBeanLocal {
     public void addUser(Users user) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 
-//        try {
-        System.out.println("name:" + user.getUsername());
-        user.setCreatedAt(new Date());
-        user.setUpdatedAt(new Date());
-        em.persist(user);
-//        } catch (ConstraintViolationException e) {
-//            e.getConstraintViolations().forEach(violation -> {
-//                System.out.println("Validation error: " + violation.getMessage());
-//            });
-//        }
+        try {
+//        Groupmaster gm = em.find(Groupmaster.class, user.getGroupmasterId().getGroupmasterId());
+
+            System.out.println("name:" + user.getUsername());
+//        user.setGroupmasterId(gm);
+            user.setCreatedAt(new Date());
+            user.setUpdatedAt(new Date());
+            em.persist(user);
+        } catch (ConstraintViolationException e) {
+            e.getConstraintViolations().forEach(violation -> {
+                System.out.println("Validation error: " + violation.getMessage());
+            });
+        }
     }
 
     @Override
@@ -91,14 +95,21 @@ public class UserBean implements UserBeanLocal {
     }
 
     @Override
-    public Collection<Users> getUserByUsername(String username) {
+    public Users getUserByUsername(String username) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        return em.createNamedQuery("Users.findByUsername").setParameter("username", username).getResultList();
+        return (Users) em.createNamedQuery("Users.findByUsername").setParameter("username", username).getResultList().iterator().next();
     }
 
     @Override
     public Users getUserByEmail(String email) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Collection<Users> getUsersByRole(Integer groupmasterId) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Groupmaster gm = em.find(Groupmaster.class, groupmasterId);
+        return gm.getUsersCollection();
     }
 
 //    -----------------------------                     POSTS                     -----------------------------
@@ -115,16 +126,17 @@ public class UserBean implements UserBeanLocal {
         p.setCreatedAt(new Date());
         p.setUpdatedAt(new Date());
 
-        try {
-            em.persist(p);
-            posts.add(p);
-            u.setPostsCollection(posts);
-            em.merge(u);
-        } catch (ConstraintViolationException e) {
-            e.getConstraintViolations().forEach(violation -> {
-                System.out.println("Validation error: " + violation.getMessage());
-            });
-        }
+//        try {
+        em.persist(p);
+//        posts.add(p);
+//        u.setPostsCollection(posts);
+        u.getPostsCollection().add(p);
+        em.merge(u);
+//        } catch (ConstraintViolationException e) {
+//            e.getConstraintViolations().forEach(violation -> {
+//                System.out.println("Validation error: " + violation.getMessage());
+//            });
+//        }
     }
 
     @Override
@@ -343,7 +355,6 @@ public class UserBean implements UserBeanLocal {
     @Override
     public void addMemberToGroup(Integer userId, Integer groupId) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        System.out.println("User id:" + userId + " Group Id:" + groupId);
         Users u = (Users) em.find(Users.class, userId);
         Groups g = (Groups) em.find(Groups.class, groupId);
 

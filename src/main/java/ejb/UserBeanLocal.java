@@ -30,11 +30,13 @@ public interface UserBeanLocal {
 
     Users getUserById(Integer userId);
 
-    Collection<Users> getUserByUsername(String username);
+    Users getUserByUsername(String username);
 
     Users getUserByEmail(String email);
 
     Collection<Users> getAllUsers();
+
+    Collection<Users> getUsersByRole(Integer groupmasterId);
 
 //    posts
     void addPost(String mediaUrl, String caption, Integer userId);
@@ -87,11 +89,11 @@ public interface UserBeanLocal {
     Conversations findOrCreateConversation(List<Integer> participantsIds, Integer groupId);
 
     Conversations getConversationById(Integer conversationId);
-    
+
     Collection<Conversations> getAllConversationOfUser(Integer userId);
 
     Messages sendMessage(List<Integer> participantsIds, Integer groupId, Integer senderId, String text);
-    
+
     Collection<Messages> getMessagesByConversation(Integer conversationId);
 
 }

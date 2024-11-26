@@ -6,6 +6,7 @@ package servlets;
 
 import client.UserClient;
 import ejb.UserBeanLocal;
+import entity.Groupmaster;
 import entity.Messages;
 import entity.Posts;
 import entity.Users;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 import javax.ejb.EJB;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,10 +28,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "TestServlet", urlPatterns = {"/TestServlet"})
 public class TestServlet extends HttpServlet {
-    
+
     @EJB
     UserBeanLocal ubl;
-    
+
     UserClient ul;
 
     /**
@@ -54,15 +57,22 @@ public class TestServlet extends HttpServlet {
             out.println("<h2>");
 
 //            ul = new UserClient();
-//
+//            Groupmaster gm=new Groupmaster();
+//            gm.setGroupmasterId(2);
 //            Users user = new Users();
-//            user.setUsername("aaa");
-//            user.setFullName("aaa aaa");
-//            user.setPassword("aaaa");
-//            user.setProfilePic("aaa.jpg");
-//
-//            ul.addUser(user);
-            ubl.addComment(3, 2, "comment");
+//            user.setUsername("kush123");
+//            user.setFullName("kush123");
+//            user.setPassword("kush123");
+//            user.setProfilePic("kush123.jpg");
+//            user.setGroupmasterId(gm);
+////
+//            ubl.addUser(user);
+//            ubl.addComment(3, 2, "comment");
+//            Collection<Users> usersOfRole = ubl.getUsersByRole(2);
+//            for (Users u : usersOfRole) {
+//                out.println("<br/>");
+//                out.println("user name:" + u.getUsername() + " --user role:" + u.getGroupmasterId().getGroupName());
+//            }
 
 //            ubl.createGroup("Kush", 1);
 //            ubl.addMemberToGroup(1, 1);
@@ -97,12 +107,12 @@ public class TestServlet extends HttpServlet {
 //            out.println("<br/>");
 ////            ubl.addUser("shobhit12", "SHobhit Damwala", "shobhit12", "shobhit-profile.jpg");
 ////            ubl.removeUser(2);
-            Collection<Users> users = ubl.getAllUsers();
-            out.println("All Users");
-            for (Users u : users) {
-                out.println("<br/>");
-                out.println("Id:" + u.getUserId() + " --- Username:" + u.getUsername() + " --- Fullname:" + u.getFullName());
-            }
+//            Collection<Users> users = ubl.getAllUsers();
+//            out.println("All Users");
+//            for (Users u : users) {
+//                out.println("<br/>");
+//                out.println("Id:" + u.getUserId() + " --- Username:" + u.getUsername() + " --- Fullname:" + u.getFullName());
+//            }
 //
 //            Users u = ubl.getUserById(1);
 //
@@ -117,11 +127,11 @@ public class TestServlet extends HttpServlet {
 //            out.println("<br/>");
 //            out.println("<br/>");
 //            out.println("All Posts");
-//            Collection<Posts> posts = ubl.getAllPosts();
-//            for (Posts p : posts) {
-//                out.println("<br/>");
-//                out.println("Id:" + p.getPostId() + " --- MediaUrl:" + p.getMediaUrl() + " --- Username:" + p.getUserId().getUsername());
-//            }
+            Collection<Posts> posts = ubl.getAllPosts();
+            for (Posts p : posts) {
+                out.println("<br/>");
+                out.println("Id:" + p.getPostId() + " --- MediaUrl:" + p.getMediaUrl() + " --- Username:" + p.getUserId().getUsername());
+            }
 //
 //            out.println("<br/>");
 //            out.println("<br/>");
@@ -142,9 +152,9 @@ public class TestServlet extends HttpServlet {
 //            }
             out.println("<br/>");
             out.println("Hello world");
-            
+
             out.println("</h2>");
-            
+
             out.println("</body>");
             out.println("</html>");
         }
